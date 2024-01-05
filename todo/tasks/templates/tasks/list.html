@@ -1,0 +1,74 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To do List App</title>
+    <!-- Add the Bootstrap CSS link here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Croissant+One&family=Kdam+Thmor+Pro&family=Mooli&family=Raleway:wght@100&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'todo/css/main.css' %}">
+    <style>
+      body {
+        padding: 20px;
+        font-family: ubuntu;
+      }
+      
+      h4 {
+        color: #007bff;
+      }
+      
+      form {
+        margin-bottom: 20px;
+      }
+      
+      .container {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      
+      a {
+        margin-right: 10px;
+        text-decoration: none;
+      }
+      
+      strike {
+        color: red; /* Customize the strike-through color */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card card-body">
+        <h4>TODO LIST</h4><hr />
+
+        <form action="/" method="POST" class="mt-4">
+          {% csrf_token %}
+
+          <div class="form-group">
+            {{ form.title }}
+            <input type="submit" class="btn btn-primary" value="Create Task" />
+          </div>
+        </form>
+
+        {% for task in tasks %}
+          <div class="container">
+            <a class="btn btn-warning" href="{% url 'update_task' task.id %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+
+            {% if task.complete == True %}
+              <strike>{{ task }}</strike>
+            {% else %}
+              <span>{{ task }}</span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
